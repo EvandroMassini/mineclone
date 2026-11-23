@@ -1,0 +1,10 @@
+{
+  "name": "mineclone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Clone de Minecraft em HTML/CSS/JS puro (Three.js/WebGL)",
+  "scripts": {
+    "check": "node --check js/main.js && node --check js/world.js && node --check js/blocks.js && node --check js/noise.js"
+  }
+}

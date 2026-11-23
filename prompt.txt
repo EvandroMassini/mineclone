@@ -1,0 +1,13 @@
+Você é um programador especializado no desenvolvimento de jogos WEB.
+
+Planeje e desenvolva um jogo clone do Minecraft. Mesmas funcionalidades, mundo amplo, efeitos visuais e sonoros, jogabilidade identica ao original. Faça tudo em HTML, CSS e JS. Salve o jogo em "C:\Users\Evandro\Desktop\minecraft". O jogo deve rodar em toda a área da janela do navegador. Caso seja necessário e possível, utilize tecnologias de aceleração por hardware (GPU). Faça tudo em etapas.
+
+1 - Planeje tudo.
+2 - Divida todo o trabalho em fases menores para facilitar o desenvolvimento
+3 - Para cada fase concluída, avalie o que foi feito, seja crítico, busque erros ou bugs. Faça as correções necessárias. Somente em seguida passe para a próxima fase.
+4 - Crie um mundo aberto e amplo, adequado ao contexto do jogo
+5 - Crie personagens (NPCs) do jogo, semelhantes ao que existe no jogo original
+6 - Crie o personagem principal (jogador) com todas as capacidades e possibilidades de jogabilidade conforme o jogo original
+7 - Se for necessário, consulte na internet para verificar imagens, sons, assets ou o que for necessário para manter a qualidade gráfica e sonora do jogo.
+
+Seja perfeccionista e crítico com seu proprio trabalho. Seja sincero sobre tudo o que fizer. Caso não tenha conhecimento sobre alguma funcionalidade, busque informações na internet.

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MineClone — WebGL</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <!-- HUD -->
+    <div id="crosshair" aria-hidden="true">
+      <div class="h"></div>
+      <div class="v"></div>
+    </div>
+
+    <div id="hotbar" aria-label="Hotbar">
+      <div class="slot active" data-slot="0">
+        <div class="tex"></div>
+        <span class="num">1</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="1">
+        <div class="tex"></div>
+        <span class="num">2</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="2">
+        <div class="tex"></div>
+        <span class="num">3</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="3">
+        <div class="tex"></div>
+        <span class="num">4</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="4">
+        <div class="tex"></div>
+        <span class="num">5</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="5">
+        <div class="tex"></div>
+        <span class="num">6</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="6">
+        <div class="tex"></div>
+        <span class="num">7</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="7">
+        <div class="tex"></div>
+        <span class="num">8</span>
+        <span class="cnt"></span>
+      </div>
+      <div class="slot" data-slot="8">
+        <div class="tex"></div>
+        <span class="num">9</span>
+        <span class="cnt"></span>
+      </div>
+    </div>
+
+    <!-- Fase 7: inventário (tecla E) — grade 27 + hotbar 9, slots via JS -->
+    <div id="inventory" class="hidden">
+      <div class="inv-panel">
+        <div class="inv-title">Inventário</div>
+        <div id="inv-main" class="inv-grid"></div>
+        <!-- Fase 8: crafting (botões por receita) -->
+        <div class="inv-sep"></div>
+        <div class="inv-title">Crafting</div>
+        <div id="crafting" class="craft-grid"></div>
+        <div class="inv-sep"></div>
+        <div id="inv-hotbar" class="inv-grid"></div>
+      </div>
+    </div>
+    <div id="cursor-item" aria-hidden="true">
+      <div class="tex"></div>
+      <span class="cnt"></span>
+    </div>
+
+    <div id="mine" aria-hidden="true"><div id="mine-fill"></div></div>
+
+    <div id="fps" aria-hidden="true"></div>
+    <div id="selname" aria-hidden="true"></div>
+    <div id="hint" aria-hidden="true">
+      Clique para jogar · ESC para liberar o mouse
+    </div>
+    <div id="toast" aria-hidden="true"></div>
+
+    <!-- Fase 9: HUD de sobrevivência (corações + fome) + flash de dano -->
+    <div id="hud" aria-hidden="true">
+      <div id="hearts"></div>
+      <div id="food"></div>
+    </div>
+    <div id="dmgflash" aria-hidden="true"></div>
+
+    <!-- Fase 9: tela de morte -->
+    <div id="death" class="hidden">
+      <div id="death-box">
+        <h1>Você morreu!</h1>
+        <p class="play">Pressione R para ressuscitar</p>
+      </div>
+    </div>
+
+    <!-- Overlay inicial -->
+    <div id="overlay">
+      <div id="overlay-box">
+        <div class="title-wrap">
+          <h1>MineClone</h1>
+          <span class="splash">Tente também: Terraria!</span>
+        </div>
+        <p class="tag">clone de Minecraft em WebGL puro</p>
+        <div class="play">Clique para jogar</div>
+        <div class="keys-grid">
+          <div class="keys-col">
+            <h3>Movimento</h3>
+            <ul class="keys">
+              <li><kbd>WASD</kbd> mover</li>
+              <li><kbd>Mouse</kbd> olhar</li>
+              <li><kbd>Shift</kbd> correr</li>
+              <li><kbd>Espaço</kbd> pular / nadar ↑</li>
+              <li><kbd>Ctrl</kbd> agachar</li>
+              <li><kbd>F2 / 2× Espaço</kbd> voo</li>
+            </ul>
+          </div>
+          <div class="keys-col">
+            <h3>Blocos</h3>
+            <ul class="keys">
+              <li><kbd>Mouse esq.</kbd> quebrar</li>
+              <li><kbd>Mouse dir.</kbd> colocar</li>
+              <li><kbd>1–9</kbd> selecionar</li>
+              <li><kbd>E</kbd> inventário</li>
+            </ul>
+          </div>
+          <div class="keys-col">
+            <h3>Sistema</h3>
+            <ul class="keys">
+              <li><kbd>R</kbd> ressuscitar</li>
+              <li><kbd>ESC</kbd> pausar</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ver corner-bl">MineClone 1.0 · WebGL puro</div>
+      <div class="ver corner-br">não afiliado à Mojang</div>
+    </div>
+
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.js" } }
+    </script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

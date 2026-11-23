@@ -1,0 +1,614 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+/* ---------- crosshair ---------- */
+#crosshair {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: difference;
+}
+#crosshair .h,
+#crosshair .v {
+  position: absolute;
+  background: #fff;
+}
+#crosshair .h {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+#crosshair .v {
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+/* ---------- hotbar ---------- */
+#hotbar {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  pointer-events: none;
+}
+.slot {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid #2a2a2a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slot .num {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 10px;
+  color: #ddd;
+  text-shadow: 1px 1px 0 #000;
+}
+.slot .cnt {
+  position: absolute;
+  bottom: 1px;
+  right: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+.slot.active {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+.slot .tex {
+  position: absolute;
+  inset: 4px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ---------- inventário (Fase 7) ---------- */
+#inventory {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+#inventory.hidden {
+  display: none;
+}
+.inv-panel {
+  background: rgba(28, 28, 28, 0.95);
+  border: 2px solid #000;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.inv-title {
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: #eee;
+  text-shadow: 1px 1px 0 #000;
+}
+.inv-sep {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 52px);
+  gap: 2px;
+}
+.inv-slot {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid #2a2a2a;
+  position: relative;
+  cursor: pointer;
+}
+.inv-slot:hover {
+  border-color: #6f6f6f;
+  background: rgba(255, 255, 255, 0.14);
+}
+.inv-slot.active {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+.inv-slot .tex {
+  position: absolute;
+  inset: 4px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.inv-slot .cnt {
+  position: absolute;
+  bottom: 1px;
+  right: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+/* item segurado (segue o mouse dentro do inventário) */
+#cursor-item {
+  position: fixed;
+  z-index: 30;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: none;
+}
+#cursor-item.show {
+  display: block;
+}
+#cursor-item .tex {
+  position: absolute;
+  inset: 2px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/* Fase 8: crafting — botões por receita */
+.craft-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.craft-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid #2a2a2a;
+  color: #ddd;
+  font:
+    12px/1.25 ui-monospace,
+    monospace;
+  cursor: pointer;
+  text-align: left;
+}
+.craft-btn:hover:not(:disabled) {
+  border-color: #6f6f6f;
+  background: rgba(255, 255, 255, 0.14);
+}
+.craft-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.craft-tex {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.craft-name {
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.craft-mat {
+  font-size: 10px;
+  color: #aaa;
+  white-space: nowrap;
+}
+#cursor-item .cnt {
+  position: absolute;
+  bottom: 1px;
+  right: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* ---------- barra de progresso de mineração ---------- */
+#mine {
+  position: fixed;
+  left: 50%;
+  top: calc(50% + 22px);
+  transform: translateX(-50%);
+  width: 48px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+#mine.show {
+  opacity: 1;
+}
+#mine-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd24a, #ff9d2e);
+}
+
+#selname {
+  position: fixed;
+  left: 50%;
+  bottom: 122px;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#selname.show {
+  opacity: 1;
+}
+
+/* ---------- hud ---------- */
+#fps {
+  position: fixed;
+  top: 8px;
+  left: 10px;
+  z-index: 10;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+}
+#hint {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+  opacity: 0.85;
+}
+#toast {
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 14px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 14px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+#toast.show {
+  opacity: 1;
+}
+
+/* ---------- hud de sobrevivência (Fase 9) ---------- */
+#hud {
+  position: fixed;
+  left: 50%;
+  bottom: 74px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  z-index: 10;
+  pointer-events: none;
+}
+#hud #hearts,
+#hud #food {
+  display: flex;
+}
+#hud img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  margin: 0 1px;
+}
+#dmgflash {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 0, 0, 0) 45%,
+    rgba(190, 0, 0, 0.5) 100%
+  );
+}
+#dmgflash.on {
+  opacity: 1;
+}
+
+/* ---------- tela de morte (Fase 9) ---------- */
+#death {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(70, 0, 0, 0.55);
+}
+#death.hidden {
+  display: none;
+}
+#death-box {
+  text-align: center;
+  color: #fff;
+  padding: 36px 52px;
+  background: rgba(10, 15, 25, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+}
+#death-box h1 {
+  font-size: 46px;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #3a1b1b;
+}
+#death-box .play {
+  margin-top: 22px;
+  font-size: 20px;
+  color: #ffe08a;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* ---------- overlay ---------- */
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 30, 50, 0.55),
+    rgba(0, 0, 0, 0.78)
+  );
+  cursor: pointer;
+}
+#overlay.hidden {
+  display: none;
+}
+#overlay-box {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  padding: 46px 58px 40px;
+  background: linear-gradient(
+    180deg,
+    rgba(13, 18, 28, 0.74),
+    rgba(8, 12, 19, 0.8)
+  );
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  outline: 2px solid rgba(0, 0, 0, 0.55);
+  outline-offset: 4px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  animation: boxIn 0.45s ease-out;
+}
+@keyframes boxIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Título estilo bloco: contorno grosso + extrusão 3D */
+#overlay-box h1 {
+  display: inline-block;
+  font-size: 54px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #cdd7e1;
+  text-shadow:
+    -2px 0 0 #35414e,
+    2px 0 0 #35414e,
+    0 -2px 0 #35414e,
+    0 2px 0 #35414e,
+    -2px -2px 0 #35414e,
+    2px -2px 0 #35414e,
+    -2px 2px 0 #35414e,
+    2px 2px 0 #35414e,
+    4px 4px 0 #242e38,
+    7px 7px 0 #1a232c,
+    10px 10px 20px rgba(0, 0, 0, 0.9);
+}
+.title-wrap {
+  position: relative;
+  display: inline-block;
+}
+/* Texto "splash" verde inclinado, como no título do Minecraft */
+.splash {
+  position: absolute;
+  right: -104px;
+  top: -10px;
+  transform: rotate(14deg);
+  color: #55ff55;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.75);
+  animation: splashPulse 0.9s ease-in-out infinite;
+}
+@keyframes splashPulse {
+  0%,
+  100% {
+    transform: rotate(14deg) scale(1);
+  }
+  50% {
+    transform: rotate(14deg) scale(1.08);
+  }
+}
+@media (max-width: 900px) {
+  .splash {
+    display: none;
+  }
+}
+#overlay-box .tag {
+  margin-top: 10px;
+  color: #9fb8c8;
+  font-size: 14px;
+}
+/* Botão estilo Minecraft: topo claro, base escura, anel preto */
+#overlay-box .play {
+  margin: 28px auto 0;
+  display: inline-block;
+  min-width: 320px;
+  padding: 13px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 2px 2px 0 #3f4750;
+  background: linear-gradient(
+    180deg,
+    #7b8590 0%,
+    #6a7480 48%,
+    #5d6672 52%,
+    #515a64 100%
+  );
+  border: 2px solid;
+  border-color: #d7dee5 #2c333b #21272e #aab3bd;
+  box-shadow:
+    0 0 0 2px #0a0d12,
+    0 8px 18px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+#overlay .play:hover {
+  color: #ffffa0;
+  background: linear-gradient(
+    180deg,
+    #8d99a6 0%,
+    #79848f 48%,
+    #6b7580 52%,
+    #5f6973 100%
+  );
+}
+/* Grade de teclas em 3 colunas com "keycaps" */
+.keys-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px 30px;
+  justify-content: center;
+  text-align: left;
+}
+.keys-col h3 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8fa8bd;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  padding-bottom: 5px;
+  margin-bottom: 9px;
+}
+.keys {
+  list-style: none;
+  font-size: 12.5px;
+  color: #cfd8e0;
+  display: grid;
+  gap: 7px;
+}
+.keys kbd {
+  display: inline-block;
+  min-width: 70px;
+  padding: 2px 8px;
+  margin-right: 8px;
+  background: linear-gradient(180deg, #4c5763, #3a434d);
+  border: 1px solid #232a31;
+  border-bottom: 3px solid #1b2127;
+  border-radius: 4px;
+  color: #fff;
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: 11px;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+/* Cantos (versão / crédito), como no título do Minecraft */
+#overlay .ver {
+  position: absolute;
+  bottom: 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+#overlay .corner-bl {
+  left: 14px;
+}
+#overlay .corner-br {
+  right: 14px;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}

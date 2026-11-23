@@ -1,0 +1,16 @@
+# MineClone — desenvolvimento local: nunca cachear código
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|png|jpg|jpeg|svg|woff2?|map)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>
+
+# URL alternativa (ex.: /minecraft/bustN/) para forçar fetch novo
+# quando o cache do navegador estiver com versões antigas dos módulos.
+# Trocar N a cada rodada de teste (bust1, bust2, ...) garante URL inédita.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^bust[0-9]*/(.*)$ $1 [L]
+</IfModule>
