@@ -12,7 +12,7 @@ Sem build, sem frameworks, sem dependência de rede: o Three.js vem vendored em
 
 ## ▶ Jogue agora
 
-- **GitHub Pages:** `https://evandromassini.github.io/mineclone/` _(após publicar — [instruções](#publicar-no-github-pages))_
+- **GitHub Pages:** `https://evandromassini.github.io/mineclone/`
 - **Local:** sirva a pasta por HTTP (XAMPP, `python -m http.server`, `npx serve`…) e abra
   `http://localhost/minecraft/`. Por usar ES Modules, `file://` não funciona.
 
@@ -126,7 +126,6 @@ Este jogo foi **criado por um agente de IA**: **OpenCode**, rodando o modelo
 `qwen3.8:27b` (via Ollama) — **sob a direção, revisão e decisões do usuário, Evandro**.
 Cada fase foi implementada e testada pelo agente (baterias de teste no browser com
 console limpo), conforme o diário em [PLAN.md](PLAN.md).
-
 
 ## Licença
 
