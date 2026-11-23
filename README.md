@@ -127,24 +127,6 @@ Este jogo foi **criado por um agente de IA**: **OpenCode**, rodando o modelo
 Cada fase foi implementada e testada pelo agente (baterias de teste no browser com
 console limpo), conforme o diário em [PLAN.md](PLAN.md).
 
-## Publicar no GitHub Pages
-
-O repositório já vem com o workflow
-[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml):
-
-1. Crie um repositório vazio no GitHub (ex.: `mineclone`).
-2. Conecte e envie o código:
-   ```bash
-   git remote add origin https://github.com/EvandroMassini/mineclone.git
-   git push -u origin main
-   ```
-3. No GitHub: **Settings → Pages → Source → `GitHub Actions`**.
-4. Aguarde o workflow **"Deploy to GitHub Pages"** ficar verde (aba _Actions_).
-5. Jogue em `https://evandromassini.github.io/mineclone/`.
-
-> Como todo o projeto usa caminhos relativos (`./vendor/...`, `css/`, `js/`) e o
-> Three.js está vendored, o site funciona em **qualquer subpasta** do Pages —
-> inclusive `evandromassini.github.io/mineclone/` — sem nenhum ajuste de configuração.
 
 ## Licença
 
