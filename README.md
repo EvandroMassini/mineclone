@@ -12,7 +12,7 @@ Sem build, sem frameworks, sem dependência de rede: o Three.js vem vendored em
 
 ## ▶ Jogue agora
 
-- **GitHub Pages:** `https://evandromassini.github.io/minecraft/` _(após publicar — [instruções](#publicar-no-github-pages))_
+- **GitHub Pages:** `https://evandromassini.github.io/mineclone/` _(após publicar — [instruções](#publicar-no-github-pages))_
 - **Local:** sirva a pasta por HTTP (XAMPP, `python -m http.server`, `npx serve`…) e abra
   `http://localhost/minecraft/`. Por usar ES Modules, `file://` não funciona.
 
@@ -132,19 +132,19 @@ console limpo), conforme o diário em [PLAN.md](PLAN.md).
 O repositório já vem com o workflow
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml):
 
-1. Crie um repositório vazio no GitHub (ex.: `minecraft`).
+1. Crie um repositório vazio no GitHub (ex.: `mineclone`).
 2. Conecte e envie o código:
    ```bash
-   git remote add origin https://github.com/EvandroMassini/minecraft.git
+   git remote add origin https://github.com/EvandroMassini/mineclone.git
    git push -u origin main
    ```
 3. No GitHub: **Settings → Pages → Source → `GitHub Actions`**.
 4. Aguarde o workflow **"Deploy to GitHub Pages"** ficar verde (aba _Actions_).
-5. Jogue em `https://evandromassini.github.io/minecraft/`.
+5. Jogue em `https://evandromassini.github.io/mineclone/`.
 
 > Como todo o projeto usa caminhos relativos (`./vendor/...`, `css/`, `js/`) e o
 > Three.js está vendored, o site funciona em **qualquer subpasta** do Pages —
-> inclusive `evandromassini.github.io/minecraft/` — sem nenhum ajuste de configuração.
+> inclusive `evandromassini.github.io/mineclone/` — sem nenhum ajuste de configuração.
 
 ## Licença
 
